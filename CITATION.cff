@@ -1,9 +1,0 @@
-cff-version: 1.2.0
-message: "If you use FramingLab in academic work, please cite the software and its author."
-title: "FramingLab by Rama Kertamukti — Web Research Edition"
-type: software
-authors:
-  - family-names: "Kertamukti"
-    given-names: "Rama"
-version: "5.0.0"
-date-released: "2026-08-14"
