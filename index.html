@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="FramingLab by Rama Kertamukti — analisis framing naratif dengan triangulasi berita, buku, jurnal ilmiah, dan catatan ilmiah." />
+  <title>FramingLab by Rama Kertamukti — Scientific Narrative Edition</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <div>
+        <span class="version">SCIENTIFIC NARRATIVE EDITION v6.0</span>
+        <h1>FramingLab by Rama Kertamukti</h1>
+        <p>Analisis framing yang menghasilkan narasi interpretatif terarah, disertai bukti tekstual dan penelusuran literatur ilmiah.</p>
+      </div>
+      <div class="badges"><span class="badge">GitHub Pages</span><span class="badge soft">Tanpa server</span><span class="badge soft">Scientific retrieval</span></div>
+    </header>
+
+    <section class="card input-card">
+      <div class="grid two">
+        <div class="field">
+          <label for="model">Model framing</label>
+          <select id="model">
+            <option value="entman">Robert N. Entman</option>
+            <option value="pan_kosicki">Pan & Kosicki</option>
+            <option value="gamson_modigliani">Gamson & Modigliani</option>
+            <option value="edelman">Murray Edelman</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="researchMode">Mode hasil</label>
+          <select id="researchMode">
+            <option value="ringkas">Ringkas & mudah dibaca</option>
+            <option value="akademik" selected>Akademik & naratif</option>
+            <option value="audit">Audit bukti & kehati-hatian</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="url">Alamat berita / artikel utama</label>
+        <input id="url" type="url" placeholder="https://www.media.com/berita/..." autocomplete="off" />
+        <small>URL dibaca melalui layanan Reader publik. Halaman CAPTCHA, verifikasi keamanan, access denied, dan halaman non-artikel akan ditolak otomatis agar tidak menghasilkan interpretasi palsu.</small>
+      </div>
+
+      <details id="manualBox">
+        <summary>Tempel teks berita / artikel secara manual</summary>
+        <div class="field topgap"><label for="title">Judul artikel</label><input id="title" type="text" placeholder="Judul berita atau artikel" /></div>
+        <div class="field"><label for="text">Isi berita / artikel</label><textarea id="text" rows="11" placeholder="Tempel teks artikel lengkap di sini. Teks ini menjadi sumber primer analisis framing."></textarea></div>
+      </details>
+
+      <div class="research-box">
+        <div class="research-title"><div><strong>Fokus penelitian & landasan ilmiah</strong><span>Fokus ini mengarahkan coding teks dan kueri literatur.</span></div><span class="pill">AUTO</span></div>
+        <div class="field"><label for="focus">Pertanyaan/fokus yang ingin dijawab</label><textarea id="focus" rows="3" placeholder="Contoh: Bagaimana media membingkai tanggung jawab pemerintah dalam konflik ini, dan bagaimana temuan tersebut dapat dibaca melalui teori framing Entman dan kajian komunikasi krisis?"></textarea></div>
+        <div class="field"><label for="scientificNotes">Catatan ilmiah peneliti (opsional)</label><textarea id="scientificNotes" rows="4" placeholder="Tempel kutipan catatan membaca, ringkasan buku/jurnal, konsep teoritis, atau catatan lapangan. Aplikasi akan membedakan catatan Anda dari sumber yang ditemukan di web."></textarea></div>
+        <div class="grid four research-switches">
+          <label class="check"><input id="searchNews" type="checkbox" checked /><span><b>Berita pembanding</b><small>GDELT</small></span></label>
+          <label class="check"><input id="searchScholar" type="checkbox" checked /><span><b>Jurnal/DOI</b><small>Crossref</small></span></label>
+          <label class="check"><input id="searchBooks" type="checkbox" checked /><span><b>Buku/monograf</b><small>Open Library</small></span></label>
+          <label class="check"><input id="searchData" type="checkbox" checked /><span><b>Repositori/DOI</b><small>DataCite</small></span></label>
+        </div>
+        <details class="advanced">
+          <summary>Pengaturan sumber ilmiah lanjutan</summary>
+          <div class="grid two topgap">
+            <div class="field"><label for="openAlexKey">OpenAlex API key (opsional)</label><input id="openAlexKey" type="password" placeholder="Masukkan API key bila tersedia" autocomplete="off" /><small>Dipakai hanya pada sesi browser dan tidak disimpan oleh aplikasi.</small></div>
+            <div class="field"><label for="maxSources">Jumlah sumber ilmiah</label><select id="maxSources"><option value="6">6 sumber</option><option value="10" selected>10 sumber</option><option value="15">15 sumber</option></select></div>
+          </div>
+        </details>
+      </div>
+
+      <button id="analyzeBtn" class="primary">ANALISIS NARATIF + RISET ILMIAH</button>
+      <p class="subnote">Aplikasi tidak mengarang data, kutipan, atau temuan literatur. Sintesis otomatis dibatasi pada teks primer, metadata/abstrak yang benar-benar diperoleh, dan catatan ilmiah yang Anda masukkan.</p>
+    </section>
+
+    <section id="status" class="status hidden"></section>
+
+    <section id="sourceCard" class="card hidden">
+      <div class="section-head"><div><span class="eyebrow">SUMBER PRIMER</span><h2>Validasi teks yang dianalisis</h2></div><span id="sourceMethod" class="pill"></span></div>
+      <div id="sourceInfo" class="source-grid"></div>
+      <div id="sourceQuality" class="quality-box"></div>
+    </section>
+
+    <section id="quickCard" class="card hidden">
+      <div class="section-head"><div><span class="eyebrow">INTERPRETASI INTI</span><h2>Apa yang sebenarnya dibingkai?</h2></div><div id="evidenceScore" class="score-chip"></div></div>
+      <div id="quickGrid" class="quick-grid"></div>
+      <div id="focusBox" class="focus-result hidden"></div>
+    </section>
+
+    <section id="resultCard" class="card hidden">
+      <div class="result-head">
+        <div><span id="modelName" class="eyebrow"></span><h2>Narasi interpretasi berdasarkan model framing</h2></div>
+        <div class="toolbar"><button id="downloadTxtBtn" class="secondary">TXT</button><button id="downloadHtmlBtn" class="secondary">Laporan HTML</button><button id="downloadJsonBtn" class="secondary">JSON</button></div>
+      </div>
+      <div id="summary" class="summary"></div>
+      <div id="narrative" class="narrative-box"></div>
+      <div id="sections" class="analysis-sections"></div>
+      <div id="conclusion" class="conclusion"></div>
+    </section>
+
+    <section id="scientificCard" class="card hidden">
+      <div class="section-head"><div><span class="eyebrow">SINTESIS ILMIAH</span><h2>Landasan buku, jurnal, dan catatan ilmiah</h2></div><span id="scientificCount" class="query-chip"></span></div>
+      <div class="web-note">Narasi di bawah menggunakan hanya informasi yang tersedia pada metadata/abstrak sumber dan catatan peneliti. Bila abstrak tidak tersedia, aplikasi hanya menggunakan judul dan metadata sebagai petunjuk relevansi—bukan sebagai klaim isi artikel.</div>
+      <div id="scientificNarrative" class="scientific-narrative"></div>
+      <div class="source-columns">
+        <section><h3>Jurnal & karya ilmiah</h3><div id="academicResults" class="result-list"></div></section>
+        <section><h3>Buku & monograf</h3><div id="bookResults" class="result-list"></div></section>
+      </div>
+      <section class="topgap"><h3>Catatan ilmiah peneliti</h3><div id="noteResults" class="result-list"></div></section>
+    </section>
+
+    <section id="webCard" class="card hidden">
+      <div class="section-head"><div><span class="eyebrow">TRIANGULASI KONTEKS</span><h2>Berita pembanding & jejak penelusuran</h2></div><span id="webQuery" class="query-chip"></span></div>
+      <div class="web-note">Berita pembanding digunakan untuk memeriksa variasi penonjolan isu dan konteks, bukan untuk otomatis menetapkan benar/salah suatu berita.</div>
+      <div id="webSummary" class="web-summary"></div>
+      <section><h3>Berita pembanding</h3><div id="newsResults" class="result-list"></div></section>
+      <div id="searchLinks" class="search-links"></div>
+    </section>
+
+    <section id="methodCard" class="card hidden">
+      <span class="eyebrow">AUDIT AKADEMIK</span><h2>Batas interpretasi & yang masih harus diverifikasi</h2>
+      <div id="limitations" class="limitations"></div>
+    </section>
+
+    <footer>
+      <strong>Powered by Rama Kertamukti Media dan Komunikasi UIN Sunan Kalijaga Yogyakarta</strong>
+      <span>FramingLab Scientific Narrative Edition — aplikasi statis yang kompatibel dengan GitHub Pages.</span>
+    </footer>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
